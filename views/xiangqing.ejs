@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="content"></div>
+	<button>返回</button>
+	<script src="/jquery1.7.js"></script>
+	<script>
+		var p = location.search.split("=")[1];
+		$.ajax({
+			url:"/xiangqing",
+			type:"post",
+			data:{p:p},
+			success:function(res){
+				if(res.cout == 0){
+					var data = res.data,str = "";
+					$.each(data,function(i,v){
+						str += `<p data-id=${v.NO}>${v.title}的id为${v.NO}</p>`
+					})
+					$(".content").html(str)
+				}
+			}
+		})
+
+			
+
+		$('button').on('click',function(){
+			location.href = '/';
+			
+		})
+	</script>
+</body>
+</html>

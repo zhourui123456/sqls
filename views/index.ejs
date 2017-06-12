@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<style>
+		*{
+			margin: 0;padding: 0;list-style: none;
+		}
+		#box{
+			width: 600px;
+			height: 500px;
+			border: 1px solid;
+			margin: 50px auto;
+		}
+		.add{
+			margin: 10px;
+		}
+		p{
+			font-size: 14px;
+			line-height: 22px;
+			padding: 0 10px;
+		}
+
+		p span{
+			float: right;
+			color: red;
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<button class='add'>添加</button>
+		<div class="content"></div>
+	</div>
+	<script src="/jquery1.7.js"></script>
+	<script>
+		// 获取内容
+			$.ajax({
+				url:"/postindex",
+				type:"post",
+				success:function(res){
+					if(res.cout == 0){
+						var data = res.data,str = "";
+
+						$.each(data,function(i,v){
+							str += `<p data-id=${v.NO}>
+										<span>${v.Time}</span>
+										${v.title}
+									</p>`
+						})
+						$(".content").html(str)
+					}
+					xiang()
+				}
+			})
+
+			// 点击添加按钮
+			$('.add').on('click',function(){
+				location.href = '/zhuce';
+			})
+			
+			// 点击添加按钮后请求的路由
+			$.ajax({
+				url: '/zhuce',
+				type:'get',
+				success: function(res){
+					if(res.cout == 0){
+						var data = res.data,str = "";
+						$.each(data,function(i,v){
+							str += `<p data-id=${v.NO}>
+										<span>${v.Time}</span>
+										${v.title}
+									</p>`
+						})
+						$(".content").html(str)
+					}
+				}
+			})
+
+			// 点击每一项列表，跳转到详情页
+			function xiang(times){
+				var pp = $('.content p');
+				$.each(pp,function(i,val){
+					$(this).on('click',function(){
+						var p = $(this).attr('data-id'),
+							times = $(this).find('span').text();
+							++times;
+						location.href = '/xiangqingye?NO='+p;
+						$.ajax({
+							url: '/time',
+							type: 'post',
+							data: {p:p,times:times}
+						})
+					})
+				})
+			}
+			
+	</script>
+</body>
+</html>

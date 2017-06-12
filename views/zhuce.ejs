@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+</head>
+<style>
+	textarea{
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<body>
+	<form action="/postzhuce" method="post">
+		<textarea name="" id="txt" cols="30" rows="10"></textarea>
+	</form>
+	<button id="btn">添加</button>
+	<script src="/jquery1.7.js"></script>
+	<script>
+	
+	$("#btn").on("click",function(){
+		var user = $("#txt").val().trim();
+		$.ajax({
+			url:"/postzhuce",
+			type:"post",
+			data:{user:user},
+			success:function(res){
+				if(res.cout == 1){
+					location.href = "/"
+				}else{
+					location.href = "/zhuce"
+				}
+			}
+		})
+	})	
+	</script>
+</body>
+</html>
